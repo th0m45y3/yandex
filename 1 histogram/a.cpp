@@ -10,13 +10,12 @@ int main() {
 	std::string str;
 	std::ifstream input ("input.txt");
 	if (input.is_open()) {
-		int max = 0;
-		while(input) {
-			input >> str;
+		while(std::getline(input, str)) {
 			for (char c : str) {
 				int cc = int(c);
 				if ((cc > 32)&&(cc < 127)) {
 					arr[cc-33] += 1;
+					//std::cout << c << ":" << cc << "\t NEW VAL = " << arr[cc-33] << std::endl;
 				}
 			}
 		}
@@ -60,8 +59,8 @@ int main() {
 	}
   	output.close();
 
-	// for (auto i : arr) {
-	// 	std::cout << i << " ";
+	// for (int i = 0; i < sizeof(arr); i++) {
+	// 	std::cout << i+33 << ": " << arr[i] << std::endl;
 	// }
 	
 	// for (auto i : vec) {
