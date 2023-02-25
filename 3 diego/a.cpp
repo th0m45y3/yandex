@@ -1,40 +1,37 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <fstream>
 
 int main()
 {
 	int num; 
-	std::cin >> num;
 	std::set<int> diego;
+	std::ifstream input("input.txt");
+	input >> num;
 	for (int i = 0; i < num; i++) {
 		int j;
-		std::cin >> j;
+		input >> j;
 		diego.insert(j);
 	}
-	std::cin >> num;
-	std::vector<int> colls(num, 0);
+	input >> num;
+	std::vector<int> colls;
 	for (int i = 0; i < num; i++) {
 		int j;
-		std::cin >> j;
-		colls[i] = j;
+		input >> j;
+		colls.push_back(j);
 	}
-
-	for (auto i : diego) std::cout << i << " ";
-	std::cout<< std::endl;
+	input.close();
 	
-	for (int i = 0; i < static_cast<int>(sizeof(colls)); i++) std::cout << colls[i] << " ";
-	std::cout<< std::endl;
-
-	for (int i = 0; i < static_cast<int>(sizeof(colls)); i++) {
+	std::ofstream output("output.txt");
+	for (int i : colls) {
 		int counter = 0; 
 		for (int j: diego){
-			if ( j < colls[i]) counter++;
-			else {
-				std::cout << counter << " ";
-				break;
-			}
+			if (j < i) counter++;
+			else break;
 		}
+		output << counter << "\n";
 	}
+	output.close();
 	return 0;
 }
