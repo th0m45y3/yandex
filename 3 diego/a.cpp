@@ -25,12 +25,26 @@ int main()
 	
 	std::ofstream output("output.txt");
 	for (int i : colls) {
-		int counter = 0; 
-		for (int j: diego){
-			if (j < i) counter++;
-			else break;
+    	if (i <= *diego.begin()) {
+        	output << 0 << "\n";
+        	continue;
+        }
+    	else if (i > *diego.rbegin()) {
+        	output << static_cast<int>(diego.size()) << "\n";
+        	continue;
+        }
+		auto id = diego.find(i);
+		if (id == diego.end()) {
+			diego.insert(i);
+			auto id = diego.find(i);
+			int index = std::distance( diego.begin(), id );
+        	output << index << "\n";
+			diego.erase(id); 
 		}
-		output << counter << "\n";
+		else {
+			int index = std::distance( diego.begin(), id );
+			output << index << "\n";
+		}
 	}
 	output.close();
 	return 0;
