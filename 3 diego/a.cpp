@@ -1,51 +1,49 @@
 #include <iostream>
-#include <set>
 #include <vector>
-#include <fstream>
+#include <fstream> 
+#include <algorithm>
+
+int count_less_than_N(const std::vector<int>& arr, int N) {
+    int low = 0;
+    int high = arr.size() - 1;
+
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] < N) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    return low;
+}
 
 int main()
 {
 	int num; 
-	std::set<int> diego;
 	std::ifstream input("input.txt");
 	input >> num;
+	std::vector<int> diego;
 	for (int i = 0; i < num; i++) {
 		int j;
 		input >> j;
-		diego.insert(j);
+		diego.push_back(j);
 	}
 	input >> num;
-	std::vector<int> colls;
+	std::sort(diego.begin(), diego.end());
+	diego.erase( unique( diego.begin(), diego.end() ), diego.end() );
+
+	std::ofstream output("output.txt"); 
+
 	for (int i = 0; i < num; i++) {
 		int j;
 		input >> j;
-		colls.push_back(j);
-	}
+
+		output << count_less_than_N(diego, j) << std::endl;
+		
+        }
 	input.close();
-	
-	std::ofstream output("output.txt");
-	for (int i : colls) {
-    	if (i <= *diego.begin()) {
-        	output << 0 << "\n";
-        	continue;
-        }
-    	else if (i > *diego.rbegin()) {
-        	output << static_cast<int>(diego.size()) << "\n";
-        	continue;
-        }
-		auto id = diego.find(i);
-		if (id == diego.end()) {
-			diego.insert(i);
-			auto id = diego.find(i);
-			int index = std::distance( diego.begin(), id );
-        	output << index << "\n";
-			diego.erase(id); 
-		}
-		else {
-			int index = std::distance( diego.begin(), id );
-			output << index << "\n";
-		}
-	}
 	output.close();
 	return 0;
 }
